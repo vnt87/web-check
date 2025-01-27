@@ -1,8 +1,12 @@
-version: '3.9'
+
 services:
   web-check:
-    container_name: Web-Check
-    image: lissy93/web-check
+    image: ghcr.io/vnt87/web-check:latest
     ports:
-      - 3000:3000
+      - "6666:3000"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
     restart: unless-stopped

@@ -1,0 +1,29 @@
+ARG NODE_VERSION=21
+FROM node:${NODE_VERSION}-alpine AS builder
+
+# Install build dependencies
+RUN apk add --no-cache python3 make g++ chromium traceroute
+
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --network-timeout 100000
+
+COPY . .
+RUN yarn build --production
+
+FROM node:${NODE_VERSION}-alpine AS runner
+WORKDIR /app
+
+# Install production dependencies
+RUN apk add --no-cache chromium traceroute
+
+COPY package.json yarn.lock ./
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY server.js ./
+
+ENV CHROME_PATH='/usr/bin/chromium-browser'
+ENV PORT=3000
+EXPOSE ${PORT}
+
+CMD ["yarn", "start"]

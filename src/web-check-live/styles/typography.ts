@@ -1,4 +1,3 @@
-
 export const TextSizes = {
   xSmall: '0.75rem',
   small: '1rem',
@@ -10,7 +9,7 @@ export const TextSizes = {
 
 export const TextReset = `
   font-size: ${TextSizes.small};
-  font-family: PTMono, Helvetica, Arial, sans-serif;
+  font-family: 'Bai Jamjuree', Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
   font-stretch: normal;
